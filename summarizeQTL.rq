@@ -1,0 +1,17 @@
+#+ summary: Summarize tomato QTL data extracted from Europe PMC. Note that only markers flanking QTLs were mapped to chromosomal locations.
+#+ tags:
+#+      - CandyGene (Example 5)
+PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX faldo: <http://biohackathon.org/resource/faldo#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+
+SELECT
+   (COUNT(DISTINCT ?pmcid) AS ?n_articles)
+   (COUNT(?qtl) AS ?n_qtls)
+   (COUNT(?loc) AS ?n_qtls_with_loc)
+FROM <http://europepmc.org/articles>
+WHERE {
+   ?qtl a obo:SO_0000771 ;
+      dcterms:isReferencedBy ?pmcid .
+   OPTIONAL { ?qtl faldo:location ?loc }
+}

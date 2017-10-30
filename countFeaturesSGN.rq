@@ -11,7 +11,7 @@ SELECT
    ?feature_id
    (COUNT(*) AS ?n)
 WHERE {
-   GRAPH <?graph> {
+   GRAPH <?_graph_iri> {
       ?ft a ?feature_type .
       FILTER regex(?feature_type, obo:SO_) .
       BIND(concat('[', replace(replace(str(?feature_type), '.+\\/', ''), '_', ':'), '](', ?feature_type, ')') AS ?feature_id)
