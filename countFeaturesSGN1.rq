@@ -1,0 +1,22 @@
+#+ summary: Count protein accessions in the tomato proteome from the UniProt database.
+#+ tags:
+#+      - CandyGene (Example 1)
+PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT
+   (str(?feature_name) AS ?feature_name)
+   ?feature_id
+   (COUNT(*) AS ?n)
+WHERE {
+   GRAPH <http://solgenomics.net/genome/Solanum_lycopersicum> {
+      ?ft a ?feature_type .
+      FILTER regex(?feature_type, obo:SO_) .
+      BIND(concat('[', replace(replace(str(?feature_type), '.+\\/', ''), '_', ':'), '](', ?feature_type, ')') AS ?feature_id)
+   }
+   GRAPH <http://purl.obolibrary.org/obo/so.owl> {
+      ?feature_type rdfs:label ?feature_name
+   }
+}
+GROUP BY ?feature_name ?feature_id
+ORDER BY DESC(?n)

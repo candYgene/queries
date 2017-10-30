@@ -1,0 +1,12 @@
+#+ summary: Count triples using specific text string
+#+ tags:
+#+      - CandyGene (Example 3)
+PREFIX bif: <http://www.openlinksw.com/schemas/bif#>
+
+SELECT (COUNT(*) AS ?n)
+WHERE {
+   graph ?g {
+      ?s ?p ?o .
+      ?o bif:contains ?_text
+   }
+}
