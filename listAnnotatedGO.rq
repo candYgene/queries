@@ -8,7 +8,7 @@ PREFIX uniprot: <http://purl.uniprot.org/core/>
 PREFIX obo: <http://purl.obolibrary.org/obo/>
 PREFIX so: <http://purl.obolibrary.org/obo/so#>
 PREFIX go: <http://www.geneontology.org/formats/oboInOwl#>
-PREFIX bif: <http://www.openlinksw.com/schemas/bif#>
+PREFIX bif: <bif:>
 
 SELECT
    DISTINCT

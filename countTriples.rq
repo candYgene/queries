@@ -1,7 +1,7 @@
 #+ summary: Count triples using specific text string
 #+ tags:
 #+      - CandyGene (Example 3)
-PREFIX bif: <http://www.openlinksw.com/schemas/bif#>
+PREFIX bif: <bif:>
 
 SELECT (COUNT(*) AS ?n)
 WHERE {
