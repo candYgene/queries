@@ -33,3 +33,18 @@ grlc-server
 
 Browse to: `http://localhost:8088/api/candYgene/queries` and you should get a
 local copy of the grlc candyGene API.
+
+# Dockerized version
+
+Instructions:
+ - Clone this repo.
+
+ - Run:
+```
+docker build -t candygene .
+docker run -it --rm -p 8888:8888 -p 8088:8088 candygene
+```
+
+ - Browse to: `http://localhost:8088/api/local` and you should get a local copy of queries in this repo.
+
+ - Browse to: `http://localhost:8888/` and you should see your notebook.
