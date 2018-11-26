@@ -5,8 +5,7 @@ RUN apt-get update
 # RUN apk add git gcc python-dev musl-dev libzmq zeromq-dev libpng freetype-dev
 RUN apt-get install -y git gcc
 
-RUN pip install git+https://github.com/c-martinez/grlc.git@candyGene
-RUN pip install jupyter ipywidgets matplotlib pandas
+RUN pip install grlc jupyter ipywidgets matplotlib pandas
 RUN jupyter nbextension enable --py widgetsnbextension
 
 RUN mkdir /queries
