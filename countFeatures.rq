@@ -1,4 +1,9 @@
-#+ summary: Count protein accessions in the tomato proteome from the UniProt database.
+#+ summary: Count geneomic features in a data graph
+#+ enumerate:
+#+   - graph:
+#+     - http://solgenomics.net/genome/Solanum_lycopersicum
+#+     - http://solgenomics.net/genome/Solanum_pennellii
+#+     - http://plants.ensembl.org/Solanum_lycopersicum
 #+ tags:
 #+      - CandyGene (Example 1)
 PREFIX obo: <http://purl.obolibrary.org/obo/>
@@ -9,7 +14,7 @@ SELECT
    ?feature_id
    (COUNT(*) AS ?n)
 WHERE {
-   GRAPH <http://solgenomics.net/genome/Solanum_lycopersicum> {
+   GRAPH ?_graph_iri {
       ?ft a ?feature_type .
       FILTER regex(?feature_type, obo:SO_) .
       BIND(concat('[', replace(replace(str(?feature_type), '.+\\/', ''), '_', ':'), '](', ?feature_type, ')') AS ?feature_id)
