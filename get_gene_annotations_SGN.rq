@@ -1,23 +1,30 @@
 #+ summary:  List Traitid for given trait_name
 #+ tags:
-#+  - Get gene annotations given SGN gene ID.
+#+  - Get gene annotations for SGN given gene ID.
 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX so: <http://purl.obolibrary.org/obo/so#>
 PREFIX bif: <bif:> 
 
 SELECT
    ?gene_id
-   ?gene
    ?gene_annotations
 WHERE {
    GRAPH <http://solgenomics.net/genome/Solanum_lycopersicum> {
-      ?gene dcterms:identifier ?gene_id ;
-         a obo:SO_0001217;
-	       rdfs:comment ?gene_annotations .
+      ?gene_uri a obo:SO_0001217;
+                dcterms:identifier ?gene_id ;
+                so:transcribed_to ?transcript.                
+      ?transcript rdfs:comment ?gene_annotations .
       BIND(bif:strcontains(?gene_id, ?_gene_id) AS ?match)
       FILTER(?match = 1)
       #FILTER(?gene_id = 'Solyc01g005000.2'^^xsd:string)
    }
 }
+
+# EXAMPLE ?gene_id = Solyc01g005000.2
+
+
+
+
