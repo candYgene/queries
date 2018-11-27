@@ -1,6 +1,6 @@
 #+ summary:  List trait_ids for given trait term
 #+ tags:
-#+  - List all trait_ids related to a trait_term
+#+  - List all trait_ids related to a [trait_term]
 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX obo: <http://purl.obolibrary.org/obo/>
@@ -8,7 +8,7 @@ PREFIX faldo: <http://biohackathon.org/resource/faldo#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX bif: <bif:>
 SELECT
-         ?trait_url
+         ?trait_uri
          ?trait_id
          ?trait_term
       FROM <http://purl.obolibrary.org/obo/po.owl>

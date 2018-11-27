@@ -1,6 +1,6 @@
 #+ summary:  List Traitid for given trait_name
 #+ tags:
-#+  - CandyGene (ListQTL and Genes)
+#+  - List all QTLs related given trait_id
 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -10,18 +10,15 @@ PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX so: <http://purl.obolibrary.org/obo/so#>
 
 SELECT
-   ?qtl
-   ?gene
-   ?gene_name
+   ?qtl_uri
+   ?qtl_id 
 WHERE {
    GRAPH <http://europepmc.org/articles> {
-      ?qtl a obo:SO_0000771 ;
-         so:overlaps ?gene ;
-         obo:RO_0003308 ?traitid .
-         BIND(uri(concat(obo:, replace(?_traitid, ':', '_'))) AS ?traitid)
-   }
-   GRAPH <http://solgenomics.net/genome/Solanum_lycopersicum> {
-      ?gene rdfs:label ?gene_name ;
-         rdf:type obo:SO_0001217.
+      ?qtl_url a obo:SO_0000771 ;
+          dcterms:identifier ?qtl_id;          
+             obo:RO_0003308 ?trait_id .
+      BIND(uri(concat(obo:, replace(?_trait_id, ':', '_'))) AS ?trait_id)
    }
 }
+
+# EXAMPLE: SP:0000012
