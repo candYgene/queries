@@ -1,0 +1,20 @@
+#+ summary:  List Traitid for given trait_name
+#+ tags:
+#+  - CandyGene (ListTraits)
+
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX faldo: <http://biohackathon.org/resource/faldo#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX bif: <bif:>
+SELECT
+         ?trait
+         ?traitid
+         ?traitlabel
+      FROM <http://purl.obolibrary.org/obo/po.owl>
+      FROM <http://purl.obolibrary.org/obo/to.owl>
+      FROM <http://purl.bioontology.org/ontology/SPTO> {
+         ?trait rdfs:label ?traitlabel;
+            <http://www.geneontology.org/formats/oboInOwl#id> ?traitid .
+         ?traitlabel bif:contains ?_traitname.
+      }
