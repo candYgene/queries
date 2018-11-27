@@ -1,0 +1,25 @@
+#+ summary:  List Traitid for given trait_name
+#+ tags:
+#+  - CandyGene (get all genes annotations from SGN)
+
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX bif: <bif:> 
+
+SELECT
+   ?gene
+   ?gene_id
+   ?gene_annotations
+WHERE {
+  GRAPH <http://solgenomics.net/genome/Solanum_lycopersicum> {
+      ?gene dcterms:identifier ?gene_id ;
+         rdf:type obo:SO_0001217;
+	 rdfs:comment ?gene_annotations.
+     ?gene_id bif:contains ?_gid.
+   }
+}
+
+#Solyc00g005060.1
