@@ -23,7 +23,8 @@ SELECT
    ?go_cat
 WHERE {
    GRAPH <http://www.uniprot.org/proteomes/Solanum_lycopersicum> {
-      ?prot uniprot:encodedBy/skos:prefLabel ?gene_name
+      ?prot uniprot:classifiedWith ?go ;
+            uniprot:encodedBy/skos:prefLabel ?gene_name.
    }
    GRAPH <http://plants.ensembl.org/Solanum_lycopersicum> {
       ?prot dc:identifier ?uniprot_acc ;
@@ -40,8 +41,7 @@ WHERE {
          rdfs:label ?go_term ;
          go:id ?go_id ;
          go:hasOBONamespace ?go_cat .
-   
-   } 
+  } 
    
 }
 
