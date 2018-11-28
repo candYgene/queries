@@ -14,24 +14,24 @@ PREFIX owl: <http://www.w3.org/2002/07/owl#>
 
 SELECT
    DISTINCT
-   ?tomato_gene_id
    ?potato_gene_id  
- 
+   ?tomato_gene_id
 WHERE{
-    Graph <http://plants.ensembl.org/Solanum_tuberosum> {
+    GRAPH <http://plants.ensembl.org/Solanum_tuberosum> {
         ?potato_gene sio:SIO_000558 ?ensemble_gene_id;
                      dc:identifier ?potato_gene_id. 
 
     }
-    Graph<http://solgenomics.net/genome/Solanum_lycopersicum>{
+    GRAPH<http://solgenomics.net/genome/Solanum_lycopersicum>{
         ?tomato_gene a obo:SO_0001217;
                      dcterms:identifier ?tomato_gene_id; 
                      owl:sameAs ?ensemble_gene_id.
     
-    BIND(bif:strcontains(?tomato_gene_id,?_tomatogene_id ) AS ?match)
-      FILTER(?match = 1) 
-    }        
+    
+    } 
+    BIND(bif:strcontains(?potato_gene_id,?_potatogene_id ) AS ?match)
+      FILTER(?match = 1)        
     
 }
 
-# Example ?tomato_gene_id = "Solyc01g091730.2"
+# Example ?tomato_gene_id = "PGSC0003DMG400027765"
