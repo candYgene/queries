@@ -27,10 +27,10 @@ WHERE {
       FROM <http://purl.bioontology.org/ontology/SPTO> {
          ?trait rdfs:label ?trait_term ;
             <http://www.geneontology.org/formats/oboInOwl#id> ?trait_id .
-         ?trait_name bif:contains ?_trait_term.
+         ?trait_term bif:contains ?_trait_term.
       }
    }
 }
-ORDER BY ?trait_name
+
 
 # EXAMPLE: trait_term: yield

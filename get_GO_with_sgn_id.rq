@@ -31,7 +31,7 @@ WHERE {
           ^<http://rdf.ebi.ac.uk/terms/ensembl/CHECKSUM> ?ensembl_prot_id .
        ?ensembl_transcript_id so:translates_to ?ensembl_prot_id ;
           so:transcribed_from/dc:identifier ?sgngene_id .
-          BIND(bif:strcontains(?sgngene_id, ?sgngene_id) AS ?match)
+          BIND(bif:strcontains(?sgngene_id, ?_sgngene_id) AS ?match)
           FILTER(?match = 1)
    }
    GRAPH <http://purl.obolibrary.org/obo/go.owl> {
@@ -39,8 +39,7 @@ WHERE {
          rdfs:label ?go_term ;
          go:id ?go_id ;
          go:hasOBONamespace ?go_cat .
-      ?o bif:contains '( fruit AND ripening )' .
-      FILTER regex(?go, obo:GO_)
+   
    } 
    
 }
