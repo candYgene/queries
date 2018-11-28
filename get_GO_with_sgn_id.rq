@@ -1,6 +1,6 @@
 #+ summary: Get GO annotations from Uniprot given a gene ID
 #+ tags:
-#+  - Get GO annotations
+#+  - Get gene annotations
 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dc: <http://purl.org/dc/elements/1.1/>
@@ -9,6 +9,7 @@ PREFIX uniprot: <http://purl.uniprot.org/core/>
 PREFIX obo: <http://purl.obolibrary.org/obo/>
 PREFIX so: <http://purl.obolibrary.org/obo/so#>
 PREFIX go: <http://www.geneontology.org/formats/oboInOwl#>
+PREFIX bif: <bif:>
 
 SELECT
    DISTINCT
@@ -18,8 +19,8 @@ SELECT
    ?uniprot_id
    ?uniprot_des
    ?go_term
-   concat('[', ?go_id, '](', ?go, ')') AS ?go_id
-   ?go_category
+   ?go_id
+   ?go_cat
 WHERE {
    GRAPH <http://www.uniprot.org/proteomes/Solanum_lycopersicum> {
       ?prot uniprot:encodedBy/skos:prefLabel ?gene_name

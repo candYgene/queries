@@ -1,9 +1,6 @@
 #+ summary:  Get gene annotations for SGN given gene ID.
 #+ tags:
 #+  - Get gene annotations
-#+ defaults:
-#+   - type: Solyc01g005000.2
-
 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
