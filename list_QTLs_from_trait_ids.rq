@@ -14,7 +14,7 @@ SELECT
    ?qtl_id 
 WHERE {
    GRAPH <http://europepmc.org/articles> {
-      ?qtl_url a obo:SO_0000771 ;
+      ?qtl_uri a obo:SO_0000771 ;
           dcterms:identifier ?qtl_id;          
              obo:RO_0003308 ?trait_id .
       BIND(uri(concat(obo:, replace(?_trait_id, ':', '_'))) AS ?trait_id)

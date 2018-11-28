@@ -1,6 +1,6 @@
-#+ summary:  List Traitid for given trait_name
+#+ summary:  Get gene annotations for SGN given gene ID.
 #+ tags:
-#+  - Get gene annotations for SGN given gene ID.
+#+  - Get gene annotations
 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
