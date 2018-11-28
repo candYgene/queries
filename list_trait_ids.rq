@@ -14,7 +14,7 @@ SELECT
       FROM <http://purl.obolibrary.org/obo/po.owl>
       FROM <http://purl.obolibrary.org/obo/to.owl>
       FROM <http://purl.bioontology.org/ontology/SPTO> {
-         ?trait_url rdfs:label ?trait_term;
+         ?trait_uri rdfs:label ?trait_term;
             <http://www.geneontology.org/formats/oboInOwl#id> ?trait_id .
          
          ?trait_term bif:contains ?_trait_term.
