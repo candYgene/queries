@@ -1,8 +1,8 @@
-#+ summary:  List Traitid for given trait_name
+#+ summary: Get genes contained in a QTL.
 #+ tags:
-#+  - List Genes inside a QTL
+#+  - Get genes contained in a QTL
 #+ defaults:
-#+   - qtl: QTL:3859326_3_2
+#+  - qtl: QTL:3859326_3_2
 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -11,20 +11,17 @@ PREFIX faldo: <http://biohackathon.org/resource/faldo#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX so: <http://purl.obolibrary.org/obo/so#>
 PREFIX genome: <http://localhost:8890/genome/>
-
 SELECT
+   str(?gene_id) AS ?gene_id
    ?gene_uri
-   ?gene_id
 WHERE {
    GRAPH <http://europepmc.org/articles> {
-      ?qtl_uri a obo:SO_0000771;
-         dcterms:identifier ?_qtl;
+      ?qtl_uri a obo:SO_0000771 ;
+         dcterms:identifier ?_qtl ;
          so:overlaps ?gene_uri .
    }
    GRAPH <http://solgenomics.net/genome/Solanum_lycopersicum> {
       ?gene_uri dcterms:identifier ?gene_id ;
-         rdf:type obo:SO_0001217.
+         a obo:SO_0001217 .
    }
 }
-
-# Example ?qtl_id = QTL:3859326_3_2

@@ -1,6 +1,8 @@
-#+ summary:  List Traitid for given trait_name
+#+ summary: Get QTLs associated with a trait ID.
 #+ tags:
-#+  - List all QTLs related given trait_id
+#+  - Get QTLs associated with a trait ID
+#+ defaults:
+#+  - trait: SP:0000201
 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -8,10 +10,9 @@ PREFIX obo: <http://purl.obolibrary.org/obo/>
 PREFIX faldo: <http://biohackathon.org/resource/faldo#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX so: <http://purl.obolibrary.org/obo/so#>
-
 SELECT
-   ?qtl_uri
-   ?qtl_id 
+   ?qtl_id
+   ?qtl_uri 
 WHERE {
    GRAPH <http://europepmc.org/articles> {
       ?qtl_uri a obo:SO_0000771 ;
@@ -20,5 +21,3 @@ WHERE {
       BIND(uri(concat(obo:, replace(?_trait_id, ':', '_'))) AS ?trait_id)
    }
 }
-
-# EXAMPLE: SP:0000012

@@ -1,0 +1,26 @@
+#+ summary:  Get gene annotations from SGN given a gene ID.
+#+ tags:
+#+  - Get gene annotations from SGN given a gene ID
+#+ defaults:
+#+  - gene: Solyc01g005000.2
+
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX so: <http://purl.obolibrary.org/obo/so#>
+PREFIX bif: <bif:>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+SELECT
+   str(?gene_id) AS ?gene_id
+   ?gene_uri
+   ?gene_annotations
+FROM <http://solgenomics.net/genome/Solanum_lycopersicum>
+FROM <http://solgenomics.net/genome/Solanum_pennellii>
+FROM <http://solgenomics.net/genome/Solanum_tuberosum>
+WHERE {
+   ?gene_uri a obo:SO_0001217 ;
+      dcterms:identifier ?gene_id ;
+      so:transcribed_to ?transcript .                
+   ?transcript rdfs:comment ?gene_annotations .
+   FILTER(?gene_id = ?_gene_id) #^^xsd:string)
+}
