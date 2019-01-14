@@ -1,7 +1,9 @@
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX obo: <http://purl.obolibrary.org/obo/>
 PREFIX faldo: <http://biohackathon.org/resource/faldo#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX ss: <http://semanticscience.org/resource/>
 
 SELECT DISTINCT
    #main data
@@ -45,8 +47,8 @@ WHERE {
    FILTER( (xsd:integer(?begin_pos) > %(beginPos)i ) && (xsd:integer(?end_pos) > %(beginPos)i ) && (xsd:integer(?begin_pos) < %(endPos)i ) && (xsd:integer(?end_pos) < %(endPos)i ) )
    OPTIONAL {
      GRAPH ?graphOrthologOrigin {
-       ?ensembl_gene <http://semanticscience.org/resource/SIO_000558> ?orthologs;
-       <http://purl.org/dc/elements/1.1/identifier> ?ensembl_gene_id;
+       ?ensembl_gene ss:SIO_000558 ?orthologs;
+       dc:identifier ?ensembl_gene_id;
        faldo:location ?ensembl_location.
        ?ensembl_location rdfs:label ?ensembl_location_in_text.
        ?ensembl_location faldo:begin ?ensembl_begin;
@@ -58,7 +60,7 @@ WHERE {
      }
      OPTIONAL {
        GRAPH ?graphOrthologTarget {
-         ?orthologs <http://purl.org/dc/elements/1.1/identifier> ?ortholog_gene_id;
+         ?orthologs dc:identifier ?ortholog_gene_id;
                 faldo:location ?ortholog_location.
          ?ortholog_location rdfs:label ?ortholog_location_in_text.
          ?ortholog_location faldo:begin ?ortholog_begin;

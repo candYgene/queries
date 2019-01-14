@@ -49,6 +49,31 @@ class SEARCH:
         else:
             return pd.DataFrame()   
         
+    def gene_annotations(self, list):
+        file = open("orthologs/gene_annotations.sparql", "r") 
+        query = file.read()
+        file.close()
+        self.sparql.setQuery(query % {"idList" : "\""+"\",\"".join(list)+"\""})
+        # JSON example
+        response = self.sparql.query().convert() 
+        result = []
+        if response["results"]["bindings"]: 
+            for item in response["results"]["bindings"]:
+                row = []
+                row.append(item["gene_id"]["value"])
+                row.append(item["ensembl_prot_id"]["value"])
+                if "term" in item.keys() :
+                   row.append(item["term"]["value"])
+                else :
+                   row.append(None) 
+                result.append(row)
+            df = pd.DataFrame(result)  
+            df.columns = ["gene_id","ensembl_prot_id","term"]   
+            df = df.set_index("gene_id")
+            return df 
+        else:
+            return pd.DataFrame()            
+        
     def interval_genes(self, interval):
         file = open("orthologs/interval_genes.sparql", "r") 
         query = file.read()
