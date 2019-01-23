@@ -1,27 +1,28 @@
-#+ summary: Count genomic features in a data graph.
-#+ enumerate:
-#+   - graph:
-#+     - http://solgenomics.net/genome/Solanum_lycopersicum
-#+     - http://solgenomics.net/genome/Solanum_pennellii
-#+     - http://plants.ensembl.org/Solanum_lycopersicum
+#+ summary: Count genomic features in a genome graph.
 #+ tags:
-#+   - Count genomic features
+#+  - Count genomic features
+#+ enumerate:
+#+  - graph:
+#+    - http://solgenomics.net/genome/Solanum_lycopersicum
+#+    - http://solgenomics.net/genome/Solanum_pennellii
+#+    - http://solgenomics.net/genome/Solanum_tuberosum
+#+    - http://plants.ensembl.org/Solanum_lycopersicum
+#+    - http://plants.ensembl.org/Solanum_tuberosum
 
-PREFIX obo: <http://purl.obolibrary.org/obo/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX obo: <http://purl.obolibrary.org/obo/>
 SELECT
-   str(?feature_name) AS ?feature_name
-   ?feature_id
-   COUNT(*) AS ?n
+  ?feature_id
+  ?feature_uri
+  ?feature
+  COUNT(*) AS ?n
+FROM ?_graph_iri
+FROM <http://purl.obolibrary.org/obo/so.owl>
 WHERE {
-   GRAPH ?_graph_iri {
-      ?ft a ?feature_type .
-      FILTER regex(?feature_type, obo:SO_) .
-      BIND(concat('[', replace(replace(str(?feature_type), '.+\\/', ''), '_', ':'), '](', ?feature_type, ')') AS ?feature_id)
-   }
-   GRAPH <http://purl.obolibrary.org/obo/so.owl> {
-      ?feature_type rdfs:label ?feature_name
-   }
+  ?f a ?feature_uri .
+  ?feature_uri rdfs:label ?feature .
+  FILTER regex(?feature_uri, obo:SO_) .
+  BIND(replace(replace(str(?feature_uri), '.+\\/', ''), '_', ':') AS ?feature_id)
 }
-GROUP BY ?feature_name ?feature_id
+GROUP BY ?feature_id ?feature_uri ?feature
 ORDER BY DESC(?n)

@@ -2,22 +2,21 @@
 #+ tags:
 #+  - Get QTLs associated with a trait ID
 #+ defaults:
-#+  - trait: SP:0000201
+#+  - traitid: SP:0000201
 
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX obo: <http://purl.obolibrary.org/obo/>
 PREFIX faldo: <http://biohackathon.org/resource/faldo#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX so: <http://purl.obolibrary.org/obo/so#>
 SELECT
-   ?qtl_id
-   ?qtl_uri 
+  ?qtl_id
+  ?qtl_uri 
+FROM <http://europepmc.org/articles>
 WHERE {
-   GRAPH <http://europepmc.org/articles> {
-      ?qtl_uri a obo:SO_0000771 ;
-          dcterms:identifier ?qtl_id;          
-             obo:RO_0003308 ?trait_id .
-      BIND(uri(concat(obo:, replace(?_trait_id, ':', '_'))) AS ?trait_id)
-   }
+  ?qtl_uri a obo:SO_0000771 ;
+    dcterms:identifier ?qtl_id;
+    obo:RO_0003308 ?trait_id .
+  BIND(uri(concat(obo:, replace(?_traitid, ':', '_'))) AS ?trait_id)
 }

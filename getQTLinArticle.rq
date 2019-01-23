@@ -2,20 +2,19 @@
 #+ tags:
 #+  - Get QTLs in an article
 #+ defaults:
-#+  - pmc_id: PMC4266912
+#+  - pmcid: PMC4266912
 
 PREFIX obo:  <http://purl.obolibrary.org/obo/>
 PREFIX pmc: <http://identifiers.org/pmc/>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 SELECT
-   str(?qtl_id) AS ?qtl_id
+   ?qtl_id
    ?qtl_uri
 WHERE {
    GRAPH <http://europepmc.org/articles> {
       ?qtl_uri a obo:SO_0000771 ;
           dcterms:identifier ?qtl_id ;
           dcterms:isReferencedBy ?pmc_id .
-      BIND(uri(concat(pmc:, ?_pmc_id)) AS ?user_pmc_id)
-      FILTER(?pmc_id = ?user_pmc_id)
+      BIND(uri(concat(pmc:, ?_pmcid)) AS ?pmc_id)
    }
 }
