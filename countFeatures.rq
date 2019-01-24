@@ -11,18 +11,19 @@
 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX obo: <http://purl.obolibrary.org/obo/>
+
 SELECT
   ?feature_id
   ?feature_uri
   ?feature
-  COUNT(*) AS ?n
-FROM ?_graph_iri
-FROM <http://purl.obolibrary.org/obo/so.owl>
+  (COUNT(*) AS ?n)
 WHERE {
-  ?f a ?feature_uri .
-  ?feature_uri rdfs:label ?feature .
-  FILTER regex(?feature_uri, obo:SO_) .
-  BIND(replace(replace(str(?feature_uri), '.+\\/', ''), '_', ':') AS ?feature_id)
+  GRAPH ?_graph_iri {
+    ?f a ?feature_uri .
+    ?f rdfs:label ?feature .
+    FILTER regex(?feature_uri, obo:SO_) .
+    BIND(replace(replace(str(?feature_uri), '.+\\/', ''), '_', ':') AS ?feature_id)
+  }
 }
 GROUP BY ?feature_id ?feature_uri ?feature
 ORDER BY DESC(?n)
