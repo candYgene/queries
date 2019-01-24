@@ -13,7 +13,7 @@ SELECT
   ?gene_id
   ?gene_uri
 FROM <http://solgenomics.net/genome/Solanum_lycopersicum>
-#FROM <http://solgenomics.net/genome/Solanum_tuberosum>
+FROM <http://solgenomics.net/genome/Solanum_tuberosum>
 FROM <http://europepmc.org/articles>
 WHERE {
   ?gene_uri a obo:SO_0001217 ;
