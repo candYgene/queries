@@ -10,6 +10,7 @@ PREFIX obo: <http://purl.obolibrary.org/obo/>
 PREFIX so: <http://purl.obolibrary.org/obo/so#>
 PREFIX bif: <bif:>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
 SELECT
    ?gene_uri
    ?gene_annotations

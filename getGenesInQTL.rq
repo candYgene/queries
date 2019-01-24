@@ -9,6 +9,7 @@ PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX obo: <http://purl.obolibrary.org/obo/>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX so: <http://purl.obolibrary.org/obo/so#>
+
 SELECT
   ?gene_id
   ?gene_uri

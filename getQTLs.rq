@@ -10,6 +10,7 @@ PREFIX obo: <http://purl.obolibrary.org/obo/>
 PREFIX faldo: <http://biohackathon.org/resource/faldo#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX so: <http://purl.obolibrary.org/obo/so#>
+
 SELECT
   ?qtl_id
   ?qtl_uri 
