@@ -10,19 +10,22 @@
 #+    - http://plants.ensembl.org/Solanum_tuberosum
 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX obo: <http://www.geneontology.org/formats/oboInOwl#>
 SELECT
-  ?feature_id
-  ?feature_uri
-  ?feature
-  COUNT(*) AS ?n
-FROM ?_graph_iri
-FROM <http://purl.obolibrary.org/obo/so.owl>
+   ?feature_id
+   ?feature_name
+   ?feature_uri
+   (COUNT(*) AS ?n)
 WHERE {
-  ?f a ?feature_uri .
-  ?feature_uri rdfs:label ?feature .
-  FILTER regex(?feature_uri, obo:SO_) .
-  BIND(replace(replace(str(?feature_uri), '.+\\/', ''), '_', ':') AS ?feature_id)
+   GRAPH ?_graph_iri {
+      ?feature a ?feature_uri .
+   }
+   GRAPH <http://purl.obolibrary.org/obo/so.owl> {
+      ?feature_uri a owl:Class ;
+      rdfs:label ?feature_name ;
+      obo:id ?feature_id .
+   }
 }
-GROUP BY ?feature_id ?feature_uri ?feature
+GROUP BY ?feature_id ?feature_name ?feature_uri
 ORDER BY DESC(?n)
