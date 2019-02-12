@@ -14,8 +14,8 @@ SELECT
 WHERE {
    GRAPH <http://europepmc.org/articles> {
       ?qtl_uri a obo:SO_0000771 ;
-          dcterms:identifier ?qtl_id ;
-          dcterms:isReferencedBy ?pmc_id .
-      BIND(uri(concat(pmc:, ?_pmcid)) AS ?pmc_id)
+         dcterms:identifier ?qtl_id ;
+         dcterms:isReferencedBy ?pmc_id .
+      BIND(URI(CONCAT(pmc:, ?_pmcid)) AS ?pmc_id)
    }
 }

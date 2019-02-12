@@ -17,7 +17,7 @@ SELECT
    ?feature_id
    ?feature_name
    ?feature_uri
-   (COUNT(*) AS ?n)
+   COUNT(*) AS ?n
 WHERE {
    GRAPH ?_graph_iri {
       ?feature a ?feature_uri .
