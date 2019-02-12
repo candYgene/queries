@@ -2,19 +2,27 @@
 #+ tags:
 #+  - Summarize QTLs extracted from articles
 
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX dcmitype: <http://purl.org/dc/dcmitype/>
 PREFIX obo: <http://purl.obolibrary.org/obo/>
 PREFIX faldo: <http://biohackathon.org/resource/faldo#>
-PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX so: <http://purl.obolibrary.org/obo/so#>
 
 SELECT
+   CONCAT('NCBITaxon:', REPLACE(STR(?taxon_uri), '.+_', ''))  AS ?taxon_id
+   ?taxon_uri
    COUNT(DISTINCT ?pmcid) AS ?n_articles
    COUNT(?qtl) AS ?n_qtls
    COUNT(?loc) AS ?n_qtls_with_loc
 FROM <http://europepmc.org/articles>
 WHERE {
+   ?dts a dcmitype:Dataset ;
+      so:genome_of ?taxon_uri ;
+      dcterms:hasPart ?qtl .
    ?qtl a obo:SO_0000771 ;
       dcterms:isReferencedBy ?pmcid .
    OPTIONAL {
       ?qtl faldo:location ?loc
    }
 }
+GROUP BY ?taxon_uri
