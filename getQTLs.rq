@@ -6,18 +6,15 @@
 
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX obo: <http://purl.obolibrary.org/obo/>
-PREFIX faldo: <http://biohackathon.org/resource/faldo#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
-PREFIX so: <http://purl.obolibrary.org/obo/so#>
+PREFIX obo: <http://purl.obolibrary.org/obo/>
 
 SELECT
    ?qtl_id
-   ?qtl_uri
 FROM <http://europepmc.org/articles>
 WHERE {
-   ?qtl_uri a obo:SO_0000771 ;
+   ?qtl a obo:SO_0000771 ;
       dcterms:identifier ?qtl_id ;
-         obo:RO_0003308 ?trait_id .
+      obo:RO_0003308 ?trait_id .
    BIND(URI(CONCAT(obo:, REPLACE(?_traitid, ':', '_'))) AS ?trait_id)
 }

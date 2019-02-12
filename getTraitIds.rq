@@ -5,14 +5,11 @@
 #+  - trait: tuber AND shape
 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX obo: <http://purl.obolibrary.org/obo/>
-PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX bif: <bif:>
 
 SELECT
    ?trait_id
    ?trait_term
-   ?trait_uri
 FROM <http://purl.obolibrary.org/obo/po.owl>
 FROM <http://purl.obolibrary.org/obo/to.owl>
 FROM <http://purl.bioontology.org/ontology/SPTO> {

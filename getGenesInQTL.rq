@@ -1,25 +1,23 @@
-#+ summary: Get genes contained in a QTL.
+#+ summary: Get genes in a QTL.
 #+ tags:
-#+  - Get genes contained in a QTL
+#+  - Get genes in a QTL
 #+ defaults:
 #+  - qtlid: QTL:3859326_3_2
 
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX obo: <http://purl.obolibrary.org/obo/>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX so: <http://purl.obolibrary.org/obo/so#>
+PREFIX Gene: <http://purl.obolibrary.org/obo/SO_0001217>
+PREFIX QTL: <http://purl.obolibrary.org/obo/SO_0000771>
 
-SELECT
-   ?gene_id
-   ?gene_uri
+SELECT ?gene_id
 FROM <http://solgenomics.net/genome/Solanum_lycopersicum>
 FROM <http://solgenomics.net/genome/Solanum_tuberosum>
 FROM <http://europepmc.org/articles>
 WHERE {
-   ?gene_uri a obo:SO_0001217 ;
+   ?gene a Gene: ;
       dcterms:identifier ?gene_id .
-   ?qtl_uri a obo:SO_0000771 ;
+   ?qtl a QTL: ;
       dcterms:identifier ?_qtlid ;
-      so:overlaps ?gene_uri .
+      so:overlaps ?gene .
 }
