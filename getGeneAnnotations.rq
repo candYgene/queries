@@ -1,25 +1,49 @@
-#+ summary:  Get annotations from SGN given a gene ID.
+#+ summary:  Get annotations from SGN and Uniprot given a gene ID.
 #+ tags:
-#+  - Get annotations from SGN given a gene ID
+#+  - Get annotations for a gene ID.
 #+ defaults:
-#+  - geneid: Solyc01g005000.2
+#+  - geneid: "'Solyc01g00500*'"
 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
-PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX uniprot: <http://purl.uniprot.org/core/>
 PREFIX so: <http://purl.obolibrary.org/obo/so#>
+PREFIX go: <http://www.geneontology.org/formats/oboInOwl#>
+PREFIX Gene: <http://purl.obolibrary.org/obo/SO_0001217>
 PREFIX bif: <bif:>
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
 SELECT
-   ?gene_uri
-   ?gene_annotations
+  ?gene_id
+  ?gene_name
+  ?transcript_id
+  ?sgn_des
+  ?uniprot_acc
+  ?uniprot_reviewed
+  ?uniprot_existence
+  ?uniprot_des
 FROM <http://solgenomics.net/genome/Solanum_lycopersicum>
-FROM <http://solgenomics.net/genome/Solanum_pennellii>
 FROM <http://solgenomics.net/genome/Solanum_tuberosum>
+FROM <http://plants.ensembl.org/Solanum_lycopersicum>
+FROM <http://plants.ensembl.org/Solanum_tuberosum>
+FROM <http://www.uniprot.org/proteomes/Solanum_lycopersicum>
+FROM <http://www.uniprot.org/proteomes/Solanum_tuberosum>
+FROM <http://purl.obolibrary.org/obo/go.owl>
+FROM <http://purl.uniprot.org/core/>
 WHERE {
-   ?gene_uri a obo:SO_0001217 ;
-      dcterms:identifier ?_geneid_xsd_string ;
-      so:transcribed_to ?transcript .                
-   ?transcript rdfs:comment ?gene_annotations
+   ?gene a Gene: ;
+      dcterms:identifier ?gene_id ;
+      so:transcribed_to ?transcript .
+   ?transcript rdfs:comment ?sgn_des ;
+      dcterms:identifier ?transcript_id ;
+      owl:sameAs/so:translates_to ?ensembl_prot .
+   ?ensembl_prot <http://rdf.ebi.ac.uk/terms/ensembl/CHECKSUM> ?uniprot .
+   ?uniprot uniprot:encodedBy/skos:prefLabel ?gene_name ;
+      dc:description ?uniprot_des ;
+      dc:identifier ?uniprot_acc ;
+      uniprot:classifiedWith/go:id ?go_id ;
+      uniprot:existence/rdfs:label ?uniprot_existence ;
+      uniprot:reviewed ?uniprot_reviewed .
+   ?gene_id bif:contains ?_geneid      
 }

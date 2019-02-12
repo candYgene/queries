@@ -1,13 +1,14 @@
-#+ summary: Get orthologous genes.
+#+ summary: Get orthologs given a gene ID.
 #+ tags:
-#+  - Get orthologous genes
+#+  - Get orthologs given a gene ID.
 #+ defaults:
-#+  - geneid: Solyc01g005000.2
+#+  - geneid: "'Solyc01g0050*'"
 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dc: <http://purl.org/dc/elements/1.1/>
 PREFIX is_orthologous_to: <http://semanticscience.org/resource/SIO_000558>
 PREFIX Gene: <http://purl.obolibrary.org/obo/SO_0001217>
+PREFIX bif: <bif:>
 
 SELECT
    ?gene_id
@@ -16,13 +17,11 @@ SELECT
    ?ortholog_uri
 FROM <http://plants.ensembl.org/Solanum_lycopersicum>
 FROM <http://plants.ensembl.org/Solanum_tuberosum>
-FROM <http://www.uniprot.org/proteomes/Solanum_lycopersicum>
-FROM <http://www.uniprot.org/proteomes/Solanum_tuberosum>
 WHERE {
    ?gene_uri a Gene: ;
       dc:identifier ?gene_id ;
       is_orthologous_to: ?ortholog_uri .
    ?ortholog_uri a Gene: ;
-      dc:identifier ?ortholog_id
-   FILTER(?gene_id = ?_geneid)
+      dc:identifier ?ortholog_id .
+   ?gene_id bif:contains ?_geneid
 }
