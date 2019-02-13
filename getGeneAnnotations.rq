@@ -25,7 +25,7 @@ SELECT
   ?uniprot_reviewed
   ?uniprot_existence
   ?uniprot_des
-  ?go_id
+  (GROUP_CONCAT(?go_id; separator=", ") as ?uniprot_goa)
 FROM <http://solgenomics.net/genome/Solanum_lycopersicum>
 FROM <http://solgenomics.net/genome/Solanum_pennellii>
 FROM <http://solgenomics.net/genome/Solanum_tuberosum>
@@ -53,3 +53,4 @@ WHERE {
    }
    ?gene_id bif:contains ?_geneid
 }
+GROUP BY ?gene_id ?gene_name ?transcript_id ?sgn_des ?uniprot_acc ?uniprot_reviewed ?uniprot_existence ?uniprot_des
