@@ -74,8 +74,11 @@ class SEARCH:
         else:
             return pd.DataFrame()            
         
-    def interval_genes(self, interval):
-        file = open("orthologs/interval_genes.sparql", "r") 
+    def interval_genes(self, interval, paralog=False):
+        if paralog:
+          file = open("orthologs/interval_genes_paralog.sparql", "r") 
+        else:
+          file = open("orthologs/interval_genes.sparql", "r") 
         query = file.read()
         file.close()
         self.sparql.setQuery(query % {"beginRef" : interval.loc["begin"]["ref"], "beginPos" : interval.loc["begin"]["pos"], "endRef" : interval.loc["end"]["ref"], "endPos" : interval.loc["end"]["pos"]})
@@ -99,6 +102,12 @@ class SEARCH:
                    row.append(item["ensembl_end_pos"]["value"])
                    row.append(item["ensembl_end_ref"]["value"]) 
                    if "ortholog_gene_id" in item.keys() :
+                     if paralog:
+                         row.append(item["path"]["value"])
+                         if "paralog_gene_id" in item.keys() :
+                             row.append(item["paralog_gene_id"]["value"])   
+                         else:
+                            row.append(None)
                      row.append(item["ortholog_gene_id"]["value"])
                      row.append(item["ortholog_location"]["value"])
                      row.append(item["ortholog_begin_pos"]["value"])
@@ -106,6 +115,9 @@ class SEARCH:
                      row.append(item["ortholog_end_pos"]["value"])
                      row.append(item["ortholog_end_ref"]["value"])
                    else : 
+                     if paralog:
+                       row.append(None)
+                       row.append(None)
                      row.append(None)
                      row.append(None)
                      row.append(None)
@@ -125,9 +137,15 @@ class SEARCH:
                    row.append(None)                
                    row.append(None)
                    row.append(None) 
+                   if paralog: 
+                     row.append(None)
+                     row.append(None) 
                 result.append(row)
             df = pd.DataFrame(result)  
-            df.columns = ["gene_id", "location", "begin_ref", "begin_pos", "end_ref", "end_pos", "ensembl_gene_id", "ensembl_location", "ensembl_begin_pos", "ensembl_begin_ref", "ensembl_end_pos", "ensembl_end_ref", "ortholog_gene_id", "ortholog_location", "ortholog_begin_pos", "ortholog_begin_ref", "ortholog_end_pos", "ortholog_end_ref"]
+            if paralog:
+                df.columns = ["gene_id", "location", "begin_ref", "begin_pos", "end_ref", "end_pos", "ensembl_gene_id", "ensembl_location", "ensembl_begin_pos", "ensembl_begin_ref", "ensembl_end_pos", "ensembl_end_ref", "path", "paralog_gene_id", "ortholog_gene_id", "ortholog_location", "ortholog_begin_pos", "ortholog_begin_ref", "ortholog_end_pos", "ortholog_end_ref"]
+            else:
+                df.columns = ["gene_id", "location", "begin_ref", "begin_pos", "end_ref", "end_pos", "ensembl_gene_id", "ensembl_location", "ensembl_begin_pos", "ensembl_begin_ref", "ensembl_end_pos", "ensembl_end_ref", "ortholog_gene_id", "ortholog_location", "ortholog_begin_pos", "ortholog_begin_ref", "ortholog_end_pos", "ortholog_end_ref"]
             df["begin_pos"] = pd.to_numeric(df["begin_pos"])
             df["end_pos"] = pd.to_numeric(df["end_pos"])
             df["ensembl_begin_pos"] = pd.to_numeric(df["ensembl_begin_pos"])

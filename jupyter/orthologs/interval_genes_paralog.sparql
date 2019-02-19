@@ -19,6 +19,8 @@ SELECT DISTINCT
    str(?ensembl_begin_ref) AS ?ensembl_begin_ref
    str(?ensembl_end_pos) AS ?ensembl_end_pos
    str(?ensembl_end_ref) AS ?ensembl_end_ref
+   ?path
+   IF(?path="PARALOG",?paralog_gene_id, undef) AS ?paralog_gene_id
    ?ortholog_gene_id AS ?ortholog_gene_id
    ?ortholog_location_in_text AS ?ortholog_location
    str(?ortholog_begin_pos) AS ?ortholog_begin_pos
@@ -59,7 +61,11 @@ WHERE {
      }
      OPTIONAL {
        GRAPH ?graphOrthologOrigin {
-         ?ensembl_gene ss:SIO_000558 ?orthologs    
+         ?ensembl_gene ss:SIO_000630 ?paralog_gene.
+         ?paralog_gene dc:identifier ?paralog_gene_id.         
+         ?source_gene ss:SIO_000558 ?orthologs
+         BIND ( IF ( ?source_gene = ?ensembl_gene, "ORTHOLOG", "PARALOG") AS ?path )
+         FILTER(?source_gene IN (?ensembl_gene, ?paralog_gene))  
        }    
        GRAPH ?graphOrthologTarget {
          ?orthologs dc:identifier ?ortholog_gene_id;
