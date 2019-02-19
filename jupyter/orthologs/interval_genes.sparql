@@ -45,10 +45,14 @@ WHERE {
                 faldo:reference <%(endRef)s>.     
    }   
    FILTER( (xsd:integer(?begin_pos) > %(beginPos)i ) && (xsd:integer(?end_pos) > %(beginPos)i ) && (xsd:integer(?begin_pos) < %(endPos)i ) && (xsd:integer(?end_pos) < %(endPos)i ) )
+   
+    #add paralog - ortholog path (paralog:SIO_000630)
+    
+    
+    
    OPTIONAL {
      GRAPH ?graphOrthologOrigin {
-       ?ensembl_gene ss:SIO_000558 ?orthologs;
-       dc:identifier ?ensembl_gene_id;
+       ?ensembl_gene dc:identifier ?ensembl_gene_id;
        faldo:location ?ensembl_location.
        ?ensembl_location rdfs:label ?ensembl_location_in_text.
        ?ensembl_location faldo:begin ?ensembl_begin;
@@ -59,6 +63,9 @@ WHERE {
                 faldo:reference ?ensembl_end_ref.  
      }
      OPTIONAL {
+       GRAPH ?graphOrthologOrigin {
+         ?ensembl_gene ss:SIO_000558 ?orthologs    
+       }    
        GRAPH ?graphOrthologTarget {
          ?orthologs dc:identifier ?ortholog_gene_id;
                 faldo:location ?ortholog_location.
