@@ -17,7 +17,7 @@ SELECT
 FROM <http://europepmc.org/articles>
 WHERE {
    ?dts a dcmitype:Dataset ;
-      so:genome_of ?taxon ;
+      so:genome_of ?taxon_uri ;
       dcterms:hasPart ?qtl .
    ?qtl a QTL: ;
       dcterms:isReferencedBy ?pmcid .
