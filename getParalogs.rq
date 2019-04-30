@@ -1,0 +1,25 @@
+#+ summary: Get paralogs given a gene ID.
+#+ tags:
+#+  - Get paralogs given a gene ID.
+#+ defaults:
+#+  - geneid: "'PGSC0003DMG400022485'"
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX is_paralogous_to: <http://semanticscience.org/resource/SIO_000630>
+PREFIX Gene: <http://purl.obolibrary.org/obo/SO_0001217>
+PREFIX bif: <bif:>
+
+SELECT
+   ?gene_id
+   ?paralog_id
+FROM <http://plants.ensembl.org/Solanum_lycopersicum>
+FROM <http://plants.ensembl.org/Solanum_tuberosum>
+WHERE {
+   ?gene_uri a Gene: ;
+      dc:identifier ?gene_id ;
+      is_paralogous_to: ?paralog_uri .
+   ?paralog_uri a Gene: ;
+      dc:identifier ?paralog_id .
+   ?gene_id bif:contains ?_geneid
+}
