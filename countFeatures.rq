@@ -24,8 +24,8 @@ WHERE {
    }
    GRAPH <http://purl.obolibrary.org/obo/so.owl> {
       ?feature_uri a owl:Class ;
-      rdfs:label ?feature_name ;
-      obo:id ?feature_id .
+         rdfs:label ?feature_name ;
+         obo:id ?feature_id .
    }
 }
 GROUP BY ?feature_id ?feature_name
