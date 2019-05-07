@@ -1,6 +1,6 @@
-#+ summary:  Get annotations from SGN and Uniprot given a gene ID.
+#+ summary:  Get annotations from SGN, Ensembl and UniProt given a gene ID.
 #+ tags:
-#+  - Get annotations for a gene ID.
+#+  - Get annotations given a gene ID.
 #+ defaults:
 #+  - geneid: "'Solyc01g00500*'"
 
