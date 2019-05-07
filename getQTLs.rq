@@ -1,6 +1,6 @@
-#+ summary: Get QTLs associated with a trait ID.
+#+ summary: Get QTLs associated with a trait identified by ID.
 #+ tags:
-#+  - Get QTLs associated with a trait ID
+#+  - Get QTLs associated with a trait
 #+ defaults:
 #+  - traitid: SP:0000201
 

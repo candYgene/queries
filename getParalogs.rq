@@ -1,6 +1,6 @@
-#+ summary: Get paralogs given a gene ID.
+#+ summary: Get paralogs of a gene identified by ID.
 #+ tags:
-#+  - Get paralogs given a gene ID.
+#+  - Get paralogs of a gene
 #+ defaults:
 #+  - geneid: "'PGSC0003DMG400022485'"
 

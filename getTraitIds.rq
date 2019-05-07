@@ -1,6 +1,6 @@
-#+ summary: Get trait IDs given a trait name.
+#+ summary: Get term ID(s) for a trait defined in the PO, TO and SPTO ontologies.
 #+ tags:
-#+  - Get trait IDs given a trait name
+#+  - Get ontology term ID(s) for a trait
 #+ defaults:
 #+  - trait: tuber AND shape
 

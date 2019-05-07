@@ -1,4 +1,4 @@
-#+ summary: Get QTLs in an article.
+#+ summary: Get QTLs described in an article identified by ID.
 #+ tags:
 #+  - Get QTLs in an article
 #+ defaults:

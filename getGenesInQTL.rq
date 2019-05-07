@@ -1,4 +1,4 @@
-#+ summary: Get genes in a QTL.
+#+ summary: Get genes that overlap with a QTL identified by ID.
 #+ tags:
 #+  - Get genes in a QTL
 #+ defaults:

@@ -1,6 +1,6 @@
-#+ summary: Get orthologs given a gene ID.
+#+ summary: Get orthologs of a gene identified by ID.
 #+ tags:
-#+  - Get orthologs given a gene ID.
+#+  - Get orthologs of a gene
 #+ defaults:
 #+  - geneid: "'Solyc01g0050*'"
 
