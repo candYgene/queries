@@ -1,0 +1,39 @@
+#+ summary:  Get the genomic location of a feature identified by ID.
+#+ tags:
+#+  - Get the genomic location of a feature. 
+#+ defaults:
+#+  - featureid: "'Solyc01g005000.2'"
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX faldo: <http://biohackathon.org/resource/faldo#>
+PREFIX bif: <bif:>
+
+SELECT
+   ?feature_id
+   ?feature_name
+   ?begin_ref
+   ?begin_pos
+   ?end_ref
+   ?end_pos
+FROM <http://solgenomics.net/genome/Solanum_tuberosum>
+FROM <http://solgenomics.net/genome/Solanum_lycopersicum>
+FROM <http://solgenomics.net/genome/Solanum_pennellii>
+FROM <http://purl.obolibrary.org/obo/so.owl>
+WHERE {
+   ?feature a ?feature_type ;
+      dcterms:identifier ?feature_id ;
+      faldo:location ?loc .
+   ?loc faldo:begin ?begin ;
+      faldo:end ?end .
+   ?begin faldo:position ?begin_pos ;
+      faldo:reference/rdfs:label ?begin_ref . 
+   ?end faldo:position ?end_pos ;  
+      faldo:reference/rdfs:label ?end_ref .
+   ?feature_type a owl:Class ;
+      rdfs:label ?feature_name .
+   ?feature_id bif:contains ?_featureid
+}
