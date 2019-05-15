@@ -14,18 +14,19 @@ PREFIX uniprot: <http://purl.uniprot.org/core/>
 PREFIX so: <http://purl.obolibrary.org/obo/so#>
 PREFIX go: <http://www.geneontology.org/formats/oboInOwl#>
 PREFIX Gene: <http://purl.obolibrary.org/obo/SO_0001217>
+PREFIX ensembl: <http://rdf.ebi.ac.uk/terms/ensembl/>
 PREFIX bif: <bif:>
 
 SELECT
-  ?gene_id
-  ?gene_name
-  ?transcript_id
-  ?sgn_des
-  ?uniprot_acc
-  ?uniprot_reviewed
-  ?uniprot_existence
-  ?uniprot_des
-  (GROUP_CONCAT(?go_id; separator=", ") as ?uniprot_goa)
+   ?gene_id
+   ?gene_name
+   ?transcript_id
+   ?sgn_des
+   ?uniprot_acc
+   ?uniprot_reviewed
+   ?uniprot_existence
+   (GROUP_CONCAT(DISTINCT ?uniprot_des; separator=", ") AS ?uniprot_des)
+   (GROUP_CONCAT(DISTINCT ?go_id; separator=", ") AS ?uniprot_goa)
 FROM <http://solgenomics.net/genome/Solanum_lycopersicum>
 FROM <http://solgenomics.net/genome/Solanum_pennellii>
 FROM <http://solgenomics.net/genome/Solanum_tuberosum>
@@ -43,14 +44,16 @@ WHERE {
       dcterms:identifier ?transcript_id .
    OPTIONAL {
       ?transcript owl:sameAs/so:translates_to ?ensembl_prot .
-      ?ensembl_prot <http://rdf.ebi.ac.uk/terms/ensembl/CHECKSUM> ?uniprot .
-      ?uniprot uniprot:encodedBy/skos:prefLabel ?gene_name ;
+      ?ensembl_prot ensembl:CHECKSUM|ensembl:SEQUENCE_MATCH ?uniprot .
+      ?uniprot dc:identifier ?uniprot_acc ;
          dc:description ?uniprot_des ;
-         dc:identifier ?uniprot_acc ;
-         uniprot:classifiedWith/go:id ?go_id ;
          uniprot:existence/rdfs:label ?uniprot_existence ;
          uniprot:reviewed ?uniprot_reviewed .
+      OPTIONAL {
+         ?uniprot uniprot:encodedBy/skos:prefLabel ?gene_name ;
+            uniprot:classifiedWith/go:id ?go_id .
+      }
    }
    ?gene_id bif:contains ?_geneid
 }
-GROUP BY ?gene_id ?gene_name ?transcript_id ?sgn_des ?uniprot_acc ?uniprot_reviewed ?uniprot_existence ?uniprot_des
+GROUP BY ?gene_id ?gene_name ?transcript_id ?sgn_des ?uniprot_acc ?uniprot_reviewed ?uniprot_existence
