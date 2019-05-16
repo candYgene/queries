@@ -13,7 +13,7 @@ PREFIX QTL: <http://purl.obolibrary.org/obo/SO_0000771>
 SELECT ?gene_id
 FROM <http://solgenomics.net/genome/Solanum_lycopersicum>
 FROM <http://solgenomics.net/genome/Solanum_tuberosum>
-FROM <http://europepmc.org/articles>
+FROM <http://europepmc.org>
 WHERE {
    ?gene a Gene: ;
       dcterms:identifier ?gene_id .

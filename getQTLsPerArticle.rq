@@ -12,7 +12,7 @@ PREFIX QTL: <http://purl.obolibrary.org/obo/SO_0000771>
 SELECT
    ?qtl_id
 WHERE {
-   GRAPH <http://europepmc.org/articles> {
+   GRAPH <http://europepmc.org> {
       ?qtl_uri a QTL: ;
          dcterms:identifier ?qtl_id ;
          dcterms:isReferencedBy ?pmc_id .

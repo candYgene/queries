@@ -11,7 +11,7 @@ PREFIX obo: <http://purl.obolibrary.org/obo/>
 
 SELECT
    ?qtl_id
-FROM <http://europepmc.org/articles>
+FROM <http://europepmc.org>
 WHERE {
    ?qtl a obo:SO_0000771 ;
       dcterms:identifier ?qtl_id ;

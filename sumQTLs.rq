@@ -14,7 +14,7 @@ SELECT
    (COUNT(DISTINCT ?pmcid) AS ?n_articles)
    (COUNT(?qtl) AS ?n_qtls)
    (COUNT(?loc) AS ?n_qtls_with_loc)
-FROM <http://europepmc.org/articles>
+FROM <http://europepmc.org>
 WHERE {
    ?dts a dcmitype:Dataset ;
       so:genome_of ?taxon_uri ;
