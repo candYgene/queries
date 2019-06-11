@@ -34,8 +34,8 @@ WHERE {
          faldo:reference/rdfs:label ?begin_ref . 
       ?end faldo:position ?end_pos ; 
          faldo:reference/rdfs:label ?end_ref .
-      FILTER(?begin_pos >= ?_start &&
-             ?end_pos <= ?_end &&
+      FILTER(?begin_pos >= ?_start_integer &&
+             ?end_pos <= ?_end_integer &&
              ?begin_ref = ?end_ref &&
              ?begin_ref = ?_chromosome)
    }
