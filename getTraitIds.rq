@@ -1,4 +1,4 @@
-#+ summary: Get term ID(s) for a trait defined in the PO, TO and SPTO ontologies.
+#+ summary: Get term ID(s) for a trait defined in several trait ontologies.
 #+ tags:
 #+  - Get ontology term ID(s) for a trait
 #+ defaults:

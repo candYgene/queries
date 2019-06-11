@@ -1,4 +1,4 @@
-#+ summary: Get the genomic location of a feature identified by ID (e.g., gene, exon/intron, transcript or marker)
+#+ summary: Get the genomic location of a feature identified by ID (e.g., gene, exon/intron, transcript or marker).
 #+ tags:
 #+  - Get the genomic location of a feature
 #+ defaults:
