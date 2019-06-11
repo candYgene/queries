@@ -3,8 +3,8 @@
 #+  - Get genomic features given an interval
 #+ defaults:
 #   - chromosome: 10
-#+  - position1: 58895882
-#+  - position2: 59082990
+#+  - start: 58895882
+#+  - end: 59082990
 
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -16,7 +16,7 @@ PREFIX bif: <bif:>
 
 SELECT
    ?feature_id
-   ?begin_ref ? AS ?chr
+   ?begin_ref AS ?chr
    ?begin_pos
    ?end_pos
 FROM <http://solgenomics.net/genome/Solanum_tuberosum>
@@ -32,8 +32,8 @@ WHERE {
       faldo:reference/rdfs:label ?begin_ref . 
    ?end faldo:position ?end_pos ; 
       faldo:reference/rdfs:label ?end_ref .
-   FILTER(?begin_pos >= ?_position1 && 
-          ?end_pos <= ?_position2 &&
+   FILTER(?begin_pos >= ?_start && 
+          ?end_pos <= ?_end &&
           ?begin_ref = ?end_ref &&
           ?begin_ref = ?_chromosome)
 }
