@@ -20,7 +20,7 @@ PREFIX faldo: <http://biohackathon.org/resource/faldo#>
 
 SELECT
    ?feature_id
-   ?begin_ref AS ?chr
+   (?begin_ref AS ?chrom)
    ?begin_pos
    ?end_pos
 WHERE {
