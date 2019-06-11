@@ -1,0 +1,39 @@
+#+ summary: Get genomic features given an interval
+#+ tags:
+#+  - Get genomic features given an interval
+#+ defaults:
+#   - chromosome: 10
+#+  - position1: 58895882
+#+  - position2: 59082990
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX faldo: <http://biohackathon.org/resource/faldo#>
+PREFIX bif: <bif:>
+
+SELECT
+   ?feature_id
+   ?begin_ref ? AS ?chr
+   ?begin_pos
+   ?end_pos
+FROM <http://solgenomics.net/genome/Solanum_tuberosum>
+FROM <http://solgenomics.net/genome/Solanum_lycopersicum>
+FROM <http://solgenomics.net/genome/Solanum_pennellii>
+WHERE {
+   ?feature a ?feature_type ;
+      dcterms:identifier ?feature_id ;
+      faldo:location ?loc .
+   ?loc faldo:begin ?begin ;
+      faldo:end ?end .
+   ?begin faldo:position ?begin_pos ;
+      faldo:reference/rdfs:label ?begin_ref . 
+   ?end faldo:position ?end_pos ; 
+      faldo:reference/rdfs:label ?end_ref .
+   FILTER(?begin_pos >= ?_position1 && 
+          ?end_pos <= ?_position2 &&
+          ?begin_ref = ?end_ref &&
+          ?begin_ref = ?_chromosome)
+}
