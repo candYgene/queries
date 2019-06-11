@@ -8,7 +8,7 @@
 #+    - http://solgenomics.net/genome/Solanum_tuberosum
 #+ defaults:
 #+  - chromosome: 10
-#+  - start: 58895882
+#+  - begin: 58895882
 #+  - end: 59082990
 
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -34,7 +34,7 @@ WHERE {
          faldo:reference/rdfs:label ?begin_ref . 
       ?end faldo:position ?end_pos ; 
          faldo:reference/rdfs:label ?end_ref .
-      FILTER(?begin_pos >= ?_start_integer &&
+      FILTER(?begin_pos >= ?_begin_integer &&
              ?end_pos <= ?_end_integer &&
              ?begin_ref = ?end_ref &&
              ?begin_ref = ?_chromosome)
