@@ -1,6 +1,11 @@
 #+ summary: Get genomic features given an interval.
 #+ tags:
 #+  - Get genomic features given an interval
+#+ enumerate:
+#+  - graph:
+#+    - http://solgenomics.net/genome/Solanum_lycopersicum
+#+    - http://solgenomics.net/genome/Solanum_pennellii
+#+    - http://solgenomics.net/genome/Solanum_tuberosum
 #+ defaults:
 #   - chromosome: 10
 #+  - start: 58895882
@@ -12,28 +17,26 @@ PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX obo: <http://purl.obolibrary.org/obo/>
 PREFIX faldo: <http://biohackathon.org/resource/faldo#>
-PREFIX bif: <bif:>
 
 SELECT
    ?feature_id
    ?begin_ref AS ?chr
    ?begin_pos
    ?end_pos
-FROM <http://solgenomics.net/genome/Solanum_tuberosum>
-FROM <http://solgenomics.net/genome/Solanum_lycopersicum>
-FROM <http://solgenomics.net/genome/Solanum_pennellii>
 WHERE {
-   ?feature a ?feature_type ;
-      dcterms:identifier ?feature_id ;
-      faldo:location ?loc .
-   ?loc faldo:begin ?begin ;
-      faldo:end ?end .
-   ?begin faldo:position ?begin_pos ;
-      faldo:reference/rdfs:label ?begin_ref . 
-   ?end faldo:position ?end_pos ; 
-      faldo:reference/rdfs:label ?end_ref .
-   FILTER(?begin_pos >= ?_start && 
-          ?end_pos <= ?_end &&
-          ?begin_ref = ?end_ref &&
-          ?begin_ref = ?_chromosome)
+   GRAPH ?_graph_iri { 
+      ?feature a ?feature_type ;
+         dcterms:identifier ?feature_id ;
+         faldo:location ?loc .
+      ?loc faldo:begin ?begin ;
+         faldo:end ?end .
+      ?begin faldo:position ?begin_pos ;
+         faldo:reference/rdfs:label ?begin_ref . 
+      ?end faldo:position ?end_pos ; 
+         faldo:reference/rdfs:label ?end_ref .
+      FILTER(?begin_pos >= ?_start &&
+             ?end_pos <= ?_end &&
+             ?begin_ref = ?end_ref &&
+             ?begin_ref = ?_chromosome)
+   }
 }
