@@ -7,7 +7,7 @@
 #+    - http://solgenomics.net/genome/Solanum_pennellii
 #+    - http://solgenomics.net/genome/Solanum_tuberosum
 #+ defaults:
-#   - chromosome: 10
+#+  - chromosome: 10
 #+  - start: 58895882
 #+  - end: 59082990
 
