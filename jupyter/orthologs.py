@@ -1,4 +1,8 @@
 from SPARQLWrapper import SPARQLWrapper, JSON
+
+import requests
+
+
 from Bio.Graphics import GenomeDiagram
 from Bio.Graphics.GenomeDiagram import CrossLink
 from reportlab.lib import colors
@@ -8,46 +12,45 @@ import pandas as pd
         
 class SEARCH:
 
-    def change_url(self, url):
-       self.url = url['new']
-       self.sparql = SPARQLWrapper(self.url)
-       self.sparql.setReturnFormat(JSON)
-        
-    def __init__(self, url):
+    def __init__(self, 
+                 url_api, url_sparql):
         #define url
-        self.url = url
+        self.url_api = url_api
+        self.url_sparql = url_sparql
         #define sparql
-        self.sparql = SPARQLWrapper(self.url)
+        self.sparql = SPARQLWrapper(self.url_sparql)
         self.sparql.setReturnFormat(JSON)
         
-    def url(self):
-        print(self.url)
+    def url_api(self):
+        print(self.url_api)
+        
+    def url_sparql(self):
+        print(self.url_sparql)
         
     def get_location(self, id):
-        file = open("orthologs/gene_location.sparql", "r") 
-        query = file.read()
-        file.close()
-        self.sparql.setQuery(query % id)
-        # JSON example
-        response = self.sparql.query().convert()
+        method = "getFeatureLocation"                
+        resp = requests.get(self.url_api+"/getFeatureLocation", 
+                             params={"featureid": "'"+id+"'"}, 
+                             headers={"accept": "application/json"})
+        response = resp.json()
         result = []
         if response["results"]["bindings"]: 
             for item in response["results"]["bindings"]:
                 result.append([
-                item["gene_id"]["value"],
-                item["location"]["value"],
-                item["begin_ref"]["value"],
+                item["feature_id"]["value"],
+                item["chrom"]["value"]+":"+item["begin_pos"]["value"]+"-"+item["end_pos"]["value"],
+                item["chrom"]["value"],
                 item["begin_pos"]["value"],
-                item["end_ref"]["value"],
-                item["end_pos"]["value"]])
+                item["end_pos"]["value"],
+                item["taxon_id"]["value"]])
             df = pd.DataFrame(result)  
-            df.columns = ["gene_id", "location", "begin_ref", "begin_pos", "end_ref", "end_pos" ]
+            df.columns = ["gene_id", "location", "chrom", "begin_pos", "end_pos", "taxon_id" ]
             df = df.set_index("gene_id")
             df["begin_pos"] = pd.to_numeric(df["begin_pos"])
             df["end_pos"] = pd.to_numeric(df["end_pos"])
             return df 
         else:
-            return pd.DataFrame()   
+            return pd.DataFrame() 
         
     def gene_annotations(self, list):
         file = open("orthologs/gene_annotations.sparql", "r") 
@@ -81,7 +84,7 @@ class SEARCH:
           file = open("orthologs/interval_genes.sparql", "r") 
         query = file.read()
         file.close()
-        self.sparql.setQuery(query % {"beginRef" : interval.loc["begin"]["ref"], "beginPos" : interval.loc["begin"]["pos"], "endRef" : interval.loc["end"]["ref"], "endPos" : interval.loc["end"]["pos"]})
+        self.sparql.setQuery(query % {"chrom" : interval.loc["begin"]["chrom"], "beginPos" : interval.loc["begin"]["pos"], "endPos" : interval.loc["end"]["pos"]})
         # JSON example
         response = self.sparql.query().convert()
         result = []
@@ -90,9 +93,9 @@ class SEARCH:
                 row = []
                 row.append(item["gene_id"]["value"])
                 row.append(item["location"]["value"])
-                row.append(item["begin_ref"]["value"])
+                row.append(item["chrom"]["value"])
                 row.append(item["begin_pos"]["value"])
-                row.append(item["end_ref"]["value"])
+                row.append(item["chrom"]["value"])
                 row.append(item["end_pos"]["value"])
                 if "ensembl_gene_id" in item.keys() :
                    row.append(item["ensembl_gene_id"]["value"])
@@ -159,7 +162,7 @@ class SEARCH:
         
     def compute_interval(self, g1, g2):  
         locations = pd.concat([self.get_location(g1), self.get_location(g2)])
-        display(locations[["location"]])
+        display(locations[["location","taxon_id"]])
         if(len(locations.index)!=2) :
             print("unexpected number of rows in locations:",len(locations.index))
         elif(locations.iloc[0]['end_pos']>locations.iloc[1]['begin_pos']) :
@@ -167,15 +170,15 @@ class SEARCH:
         else :
             result = []
             if locations.iloc[0]["end_pos"]>locations.iloc[0]["begin_pos"] :
-              result.append(["begin", locations.iloc[0]["end_ref"], locations.iloc[0]["end_pos"]])
+              result.append(["begin", locations.iloc[0]["chrom"], locations.iloc[0]["end_pos"]])
             else :
-              result.append(["begin", locations.iloc[0]["begin_ref"], locations.iloc[0]["begin_pos"]])
+              result.append(["begin", locations.iloc[0]["chrom"], locations.iloc[0]["begin_pos"]])
             if locations.iloc[1]["begin_pos"]<locations.iloc[1]["end_pos"] :
-              result.append(["end", locations.iloc[1]["begin_ref"], locations.iloc[1]["begin_pos"]])
+              result.append(["end", locations.iloc[1]["chrom"], locations.iloc[1]["begin_pos"]])
             else :
-              result.append(["end", locations.iloc[1]["end_ref"], locations.iloc[1]["end_pos"]])
+              result.append(["end", locations.iloc[1]["chrom"], locations.iloc[1]["end_pos"]])
             df = pd.DataFrame(result)
-            df.columns = ["type", "ref", "pos" ]
+            df.columns = ["type", "chrom", "pos" ]
             df = df.set_index("type")
             return df
     
