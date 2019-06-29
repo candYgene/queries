@@ -7,9 +7,9 @@
 #+    - http://solgenomics.net/genome/Solanum_pennellii
 #+    - http://solgenomics.net/genome/Solanum_tuberosum
 #+ defaults:
-#+  - chromosome: 10
-#+  - begin: 58895882
-#+  - end: 59082990
+#+  - chrom: "chromosome 10"
+#+  - begin: "58895882"
+#+  - end: "59082990"
 
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -17,26 +17,27 @@ PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX obo: <http://purl.obolibrary.org/obo/>
 PREFIX faldo: <http://biohackathon.org/resource/faldo#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
-SELECT
-   ?feature_id
-   (?begin_ref AS ?chrom)
-   ?begin_pos
-   ?end_pos
+SELECT *
 WHERE {
-   GRAPH ?_graph_iri { 
-      ?feature a ?feature_type ;
-         dcterms:identifier ?feature_id ;
-         faldo:location ?loc .
-      ?loc faldo:begin ?begin ;
-         faldo:end ?end .
-      ?begin faldo:position ?begin_pos ;
-         faldo:reference/rdfs:label ?begin_ref . 
-      ?end faldo:position ?end_pos ; 
-         faldo:reference/rdfs:label ?end_ref .
-      FILTER(?begin_pos >= ?_begin_integer &&
-             ?end_pos <= ?_end_integer &&
-             ?begin_ref = ?end_ref &&
-             ?begin_ref = ?_chromosome)
+   GRAPH ?_graph_iri {
+      SELECT
+         ?feature_id
+         ?begin_pos
+         ?end_pos
+      WHERE {
+         ?feature a ?feature_type ;
+            dcterms:identifier ?feature_id ;
+            faldo:location ?loc .
+         ?loc faldo:begin ?begin ;
+            faldo:end ?end .
+         ?begin faldo:position ?begin_pos ;
+            faldo:reference/rdfs:label ?_chrom_xsd_string .
+         ?end faldo:position ?end_pos ;
+            faldo:reference/rdfs:label ?_chrom_xsd_string .
+      }
    }
+   FILTER(?begin_pos >= ?_begin_xsd_integer &&
+          ?end_pos <= ?_end_xsd_integer)
 }
