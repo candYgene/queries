@@ -24,6 +24,7 @@ WHERE {
    GRAPH ?_graph_iri {
       SELECT
          ?feature_id
+         (?_chrom_xsd_string AS ?chrom)
          ?begin_pos
          ?end_pos
       WHERE {
