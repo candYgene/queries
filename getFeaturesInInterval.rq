@@ -10,6 +10,7 @@
 #+  - chrom: "chromosome 10"
 #+  - begin: "58895882"
 #+  - end: "59082990"
+#+  - feature: "'protein_coding_gene'"
 
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -18,16 +19,23 @@ PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX obo: <http://purl.obolibrary.org/obo/>
 PREFIX faldo: <http://biohackathon.org/resource/faldo#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX bif: <bif:>
 
 SELECT *
 WHERE {
    GRAPH ?_graph_iri {
       SELECT
          ?feature_id
+         ?feature_name
          (?_chrom_xsd_string AS ?chrom)
          ?begin_pos
          ?end_pos
       WHERE {
+         GRAPH <http://purl.obolibrary.org/obo/so.owl> {
+            ?feature_type a owl:Class ;
+               rdfs:label ?feature_name .
+            ?feature_name bif:contains ?_feature_xsd_string .
+         }
          ?feature a ?feature_type ;
             dcterms:identifier ?feature_id ;
             faldo:location ?loc .
