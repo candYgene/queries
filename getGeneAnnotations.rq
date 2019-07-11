@@ -18,15 +18,15 @@ PREFIX ensembl: <http://rdf.ebi.ac.uk/terms/ensembl/>
 PREFIX bif: <bif:>
 
 SELECT
-   ?gene_id
-   ?gene_name
-   ?transcript_id
-   ?sgn_des
-   ?uniprot_acc
-   ?uniprot_reviewed
-   ?uniprot_existence
-   (GROUP_CONCAT(DISTINCT(?uniprot_des); separator=", ") AS ?uniprot_des)
-   (GROUP_CONCAT(DISTINCT(CONCAT(?go_id, ' [', ?go_term, ']')); separator=", ") AS ?uniprot_goa)   
+  ?gene_id
+  ?gene_name
+  ?transcript_id
+  ?sgn_des
+  ?uniprot_acc
+  ?uniprot_reviewed
+  ?uniprot_existence
+  (GROUP_CONCAT(DISTINCT(?uniprot_des); separator=", ") AS ?uniprot_des)
+  (GROUP_CONCAT(DISTINCT(CONCAT(?go_id, ' [', ?go_term, ']')); separator=", ") AS ?uniprot_goa)
 FROM <http://solgenomics.net/genome/Solanum_lycopersicum>
 FROM <http://solgenomics.net/genome/Solanum_pennellii>
 FROM <http://solgenomics.net/genome/Solanum_tuberosum>
@@ -37,29 +37,36 @@ FROM <http://www.uniprot.org/proteomes/Solanum_tuberosum>
 FROM <http://purl.obolibrary.org/obo/go.owl>
 FROM <http://purl.uniprot.org/core/>
 WHERE {
-   ?gene a Gene: ;
-      dcterms:identifier ?gene_id ;
-      so:transcribed_to ?transcript .
-   ?transcript rdfs:comment ?sgn_des ;
-      dcterms:identifier ?transcript_id .
-   OPTIONAL {
-      ?transcript owl:sameAs/so:translates_to ?ensembl_prot .
-      ?ensembl_prot ensembl:CHECKSUM|ensembl:SEQUENCE_MATCH ?uniprot .
-      ?uniprot dc:identifier ?uniprot_acc ;
-         dc:description ?uniprot_des ;
-         uniprot:existence/rdfs:label ?uniprot_existence ;
-         uniprot:reviewed ?uniprot_reviewed .
+  ?gene a Gene: ;
+    dcterms:identifier ?gene_id ;
+    so:transcribed_to ?transcript .
+  ?transcript rdfs:comment ?sgn_des ;
+    dcterms:identifier ?transcript_id .
+  OPTIONAL {
+    ?transcript owl:sameAs/so:translates_to ?ensembl_prot .
+    ?ensembl_prot ensembl:CHECKSUM|ensembl:SEQUENCE_MATCH ?uniprot .
+    ?uniprot dc:identifier ?uniprot_acc ;
+      dc:description ?uniprot_des ;
+      uniprot:existence/rdfs:label ?uniprot_existence ;
+      uniprot:reviewed ?uniprot_reviewed .
+    OPTIONAL {
+      ?uniprot uniprot:encodedBy/skos:prefLabel ?gene_name.
+    }
+    OPTIONAL {
+    ?go ^uniprot:classifiedWith ?uniprot ;
+      go:id ?go_id
       OPTIONAL {
-         ?uniprot uniprot:encodedBy/skos:prefLabel ?gene_name.
+        ?go rdfs:label ?go_term
       }
-      OPTIONAL {
-         ?go ^uniprot:classifiedWith ?uniprot ;
-            go:id ?go_id
-         OPTIONAL {
-            ?go rdfs:label ?go_term  
-         }
-      }
-   }
-   ?gene_id bif:contains ?_geneid
+    }
+  }
+  ?gene_id bif:contains ?_geneid
 }
-GROUP BY ?gene_id ?gene_name ?transcript_id ?sgn_des ?uniprot_acc ?uniprot_reviewed ?uniprot_existence
+GROUP BY
+  ?gene_id
+  ?gene_name
+  ?transcript_id
+  ?sgn_des
+  ?uniprot_acc
+  ?uniprot_reviewed
+  ?uniprot_existence

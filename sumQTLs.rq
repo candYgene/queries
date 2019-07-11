@@ -10,19 +10,19 @@ PREFIX so: <http://purl.obolibrary.org/obo/so#>
 PREFIX QTL: <http://purl.obolibrary.org/obo/SO_0000771>
 
 SELECT
-   (CONCAT('NCBITaxon:', REPLACE(STR(?taxon_uri), '.+_', ''))  AS ?taxon_id)
-   (COUNT(DISTINCT ?pmcid) AS ?n_articles)
-   (COUNT(?qtl) AS ?n_qtls)
-   (COUNT(?loc) AS ?n_qtls_with_loc)
+  (CONCAT('NCBITaxon:', REPLACE(STR(?taxon_uri), '.+_', ''))  AS ?taxon_id)
+  (COUNT(DISTINCT ?pmcid) AS ?n_articles)
+  (COUNT(?qtl) AS ?n_qtls)
+  (COUNT(?loc) AS ?n_qtls_with_loc)
 FROM <http://europepmc.org>
 WHERE {
-   ?dts a dcmitype:Dataset ;
-      so:genome_of ?taxon_uri ;
-      dcterms:hasPart ?qtl .
-   ?qtl a QTL: ;
-      dcterms:isReferencedBy ?pmcid .
-   OPTIONAL {
-      ?qtl faldo:location ?loc
-   }
+  ?dts a dcmitype:Dataset ;
+    so:genome_of ?taxon_uri ;
+    dcterms:hasPart ?qtl .
+  ?qtl a QTL: ;
+    dcterms:isReferencedBy ?pmcid .
+  OPTIONAL {
+    ?qtl faldo:location ?loc
+  }
 }
 GROUP BY ?taxon_uri

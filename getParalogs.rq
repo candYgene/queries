@@ -11,15 +11,15 @@ PREFIX Gene: <http://purl.obolibrary.org/obo/SO_0001217>
 PREFIX bif: <bif:>
 
 SELECT
-   ?gene_id
-   ?paralog_id
+  ?gene_id
+  ?paralog_id
 FROM <http://plants.ensembl.org/Solanum_lycopersicum>
 FROM <http://plants.ensembl.org/Solanum_tuberosum>
 WHERE {
-   ?gene_uri a Gene: ;
-      dc:identifier ?gene_id ;
-      is_paralogous_to: ?paralog_uri .
-   ?paralog_uri a Gene: ;
-      dc:identifier ?paralog_id .
-   ?gene_id bif:contains ?_geneid
+  ?gene_uri a Gene: ;
+    dc:identifier ?gene_id ;
+    is_paralogous_to: ?paralog_uri .
+  ?paralog_uri a Gene: ;
+    dc:identifier ?paralog_id .
+  ?gene_id bif:contains ?_geneid
 }

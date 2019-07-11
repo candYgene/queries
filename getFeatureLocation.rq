@@ -14,31 +14,31 @@ PREFIX so: <http://purl.obolibrary.org/obo/so#>
 PREFIX bif: <bif:>
 
 SELECT
-   ?feature_id
-   ?feature_name
-   (?begin_lb AS ?chrom)
-   ?begin_pos
-   ?end_pos
-   ?taxon_id
+  ?feature_id
+  ?feature_name
+  (?begin_lb AS ?chrom)
+  ?begin_pos
+  ?end_pos
+  ?taxon_id
 FROM <http://solgenomics.net/genome/Solanum_tuberosum>
 FROM <http://solgenomics.net/genome/Solanum_lycopersicum>
 FROM <http://solgenomics.net/genome/Solanum_pennellii>
 FROM <http://purl.obolibrary.org/obo/so.owl>
 WHERE {
-   ?feature a ?feature_type ;
-      dcterms:identifier ?feature_id ;
-      faldo:location ?loc .
-   ?loc faldo:begin ?begin ;
-      faldo:end ?end .
-   ?begin faldo:position ?begin_pos ;
-      faldo:reference ?begin_ref .
-   ?begin_ref rdfs:label ?begin_lb ;
-      ^so:has_part/so:genome_of/dcterms:identifier ?taxon_id .
-   ?end faldo:position ?end_pos ;
-      faldo:reference ?end_ref .
-   ?end_ref rdfs:label ?end_lb .
-   ?feature_type a owl:Class ;
-      rdfs:label ?feature_name .
-   ?feature_id bif:contains ?_featureid .
-   FILTER(?begin_lb = ?end_lb)
+  ?feature a ?feature_type ;
+    dcterms:identifier ?feature_id ;
+    faldo:location ?loc .
+  ?loc faldo:begin ?begin ;
+    faldo:end ?end .
+  ?begin faldo:position ?begin_pos ;
+    faldo:reference ?begin_ref .
+  ?begin_ref rdfs:label ?begin_lb ;
+    ^so:has_part/so:genome_of/dcterms:identifier ?taxon_id .
+  ?end faldo:position ?end_pos ;
+    faldo:reference ?end_ref .
+  ?end_ref rdfs:label ?end_lb .
+  ?feature_type a owl:Class ;
+    rdfs:label ?feature_name .
+  ?feature_id bif:contains ?_featureid .
+  FILTER(?begin_lb = ?end_lb)
 }

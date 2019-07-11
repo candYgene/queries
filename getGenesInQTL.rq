@@ -10,14 +10,15 @@ PREFIX so: <http://purl.obolibrary.org/obo/so#>
 PREFIX Gene: <http://purl.obolibrary.org/obo/SO_0001217>
 PREFIX QTL: <http://purl.obolibrary.org/obo/SO_0000771>
 
-SELECT ?gene_id
+SELECT
+  ?gene_id
 FROM <http://solgenomics.net/genome/Solanum_lycopersicum>
 FROM <http://solgenomics.net/genome/Solanum_tuberosum>
 FROM <http://europepmc.org>
 WHERE {
-   ?gene a Gene: ;
-      dcterms:identifier ?gene_id .
-   ?qtl a QTL: ;
-      dcterms:identifier ?_qtlid ;
-      so:overlaps ?gene .
+  ?gene a Gene: ;
+    dcterms:identifier ?gene_id .
+  ?qtl a QTL: ;
+    dcterms:identifier ?_qtlid ;
+    so:overlaps ?gene .
 }
