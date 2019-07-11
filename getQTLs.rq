@@ -2,19 +2,25 @@
 #+ tags:
 #+  - Get QTLs associated with a trait
 #+ defaults:
-#+  - traitid: SP:0000201
+#+  - traitid: "SP:0000201"
 
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX QTL: <http://purl.obolibrary.org/obo/SO_0000771>
 PREFIX obo: <http://purl.obolibrary.org/obo/>
 
 SELECT
-   ?qtl_id
-FROM <http://europepmc.org>
+  ?qtl_id
 WHERE {
-   ?qtl a obo:SO_0000771 ;
-      dcterms:identifier ?qtl_id ;
-      obo:RO_0003308 ?trait_id .
-   BIND(URI(CONCAT(obo:, REPLACE(?_traitid, ':', '_'))) AS ?trait_id)
+  GRAPH <http://europepmc.org> {
+    SELECT
+      *
+    WHERE {
+      ?qtl a QTL: ;
+        dcterms:identifier ?qtl_id ;
+        obo:RO_0003308 ?trait_id .
+      FILTER(?trait_id = URI(CONCAT(obo:, REPLACE(?_traitid, ':', '_'))))
+    }
+  }
 }
