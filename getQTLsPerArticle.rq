@@ -2,7 +2,7 @@
 #+ tags:
 #+  - Get QTLs in an article
 #+ defaults:
-#+  - pmcid: PMC4266912
+#+  - pmcid: "PMC4266912"
 
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX pmc: <http://identifiers.org/pmc/>
@@ -10,12 +10,16 @@ PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX QTL: <http://purl.obolibrary.org/obo/SO_0000771>
 
 SELECT
-   ?qtl_id
+  ?qtl_id
 WHERE {
-   GRAPH <http://europepmc.org> {
+  GRAPH <http://europepmc.org> {
+    SELECT
+      *
+    WHERE {
       ?qtl_uri a QTL: ;
-         dcterms:identifier ?qtl_id ;
-         dcterms:isReferencedBy ?pmc_id .
-      BIND(URI(CONCAT(pmc:, ?_pmcid)) AS ?pmc_id)
-   }
+        dcterms:identifier ?qtl_id ;
+        dcterms:isReferencedBy ?pmc_id .
+      FILTER(?pmc_id = URI(CONCAT(pmc:, ?_pmcid)))
+    }
+  }
 }
