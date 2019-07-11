@@ -25,8 +25,8 @@ SELECT
    ?uniprot_acc
    ?uniprot_reviewed
    ?uniprot_existence
-   (GROUP_CONCAT(DISTINCT ?uniprot_des; separator=", ") AS ?uniprot_des)
-   (GROUP_CONCAT(DISTINCT ?go_id; separator=", ") AS ?uniprot_goa)
+   (GROUP_CONCAT(DISTINCT(?uniprot_des); separator=", ") AS ?uniprot_des)
+   (GROUP_CONCAT(DISTINCT(CONCAT(?go_id, ' [', ?go_term, ']')); separator=", ") AS ?uniprot_goa)   
 FROM <http://solgenomics.net/genome/Solanum_lycopersicum>
 FROM <http://solgenomics.net/genome/Solanum_pennellii>
 FROM <http://solgenomics.net/genome/Solanum_tuberosum>
@@ -50,8 +50,14 @@ WHERE {
          uniprot:existence/rdfs:label ?uniprot_existence ;
          uniprot:reviewed ?uniprot_reviewed .
       OPTIONAL {
-         ?uniprot uniprot:encodedBy/skos:prefLabel ?gene_name ;
-            uniprot:classifiedWith/go:id ?go_id .
+         ?uniprot uniprot:encodedBy/skos:prefLabel ?gene_name.
+      }
+      OPTIONAL {
+         ?go ^uniprot:classifiedWith ?uniprot ;
+            go:id ?go_id
+         OPTIONAL {
+            ?go rdfs:label ?go_term  
+         }
       }
    }
    ?gene_id bif:contains ?_geneid
