@@ -10,6 +10,7 @@ SELECT
   (COUNT(DISTINCT ?pmcid) AS ?n_articles)
   (COUNT(?qtl_a) AS ?n_qtls)
   (COUNT(?qtl_b) AS ?n_qtls_with_loc)
+  (COUNT(?qtl_c) AS ?n_qtls_with_genes)
 WHERE
 {
   {
@@ -24,6 +25,14 @@ WHERE
     WHERE {
       ?qtl a QTL: ;
         faldo:location ?loc .
+    }
+  }
+  UNION
+  {
+    SELECT DISTINCT ?qtl ("C" AS ?qtl_c)
+    WHERE {
+      ?qtl a QTL: ;
+        so:overlaps ?gene .
     }
   }
   ?dts a dcmitype:Dataset ;
