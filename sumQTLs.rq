@@ -1,7 +1,3 @@
-#+ summary: Summarize QTLs extracted from articles.
-#+ tags:
-#+  - Summarize QTLs
-
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX dcmitype: <http://purl.org/dc/dcmitype/>
@@ -12,17 +8,27 @@ PREFIX QTL: <http://purl.obolibrary.org/obo/SO_0000771>
 SELECT
   (CONCAT('NCBITaxon:', REPLACE(STR(?taxon_uri), '.+_', ''))  AS ?taxon_id)
   (COUNT(DISTINCT ?pmcid) AS ?n_articles)
-  (COUNT(DISTINCT ?qtl) AS ?n_qtls)
-  (COUNT(DISTINCT ?loc) AS ?n_qtls_with_loc)
-FROM <http://europepmc.org>
-WHERE {
+  (COUNT(?qtl_a) AS ?n_qtls)
+  (COUNT(?qtl_b) AS ?n_qtls_with_loc)
+WHERE
+{
+  {
+    SELECT ?qtl ("A" AS ?qtl_a)
+    WHERE {
+      ?qtl a QTL: .
+    }
+  }
+  UNION
+  {
+    SELECT ?qtl ("B" AS ?qtl_b)
+    WHERE {
+      ?qtl a QTL: ;
+        faldo:location ?loc .
+    }
+  }
   ?dts a dcmitype:Dataset ;
     so:genome_of ?taxon_uri ;
     dcterms:hasPart ?qtl .
-  ?qtl a QTL: ;
-    dcterms:isReferencedBy ?pmcid .
-  OPTIONAL {
-    ?qtl faldo:location ?loc
-  }
+  ?qtl dcterms:isReferencedBy ?pmcid .
 }
 GROUP BY ?taxon_uri
