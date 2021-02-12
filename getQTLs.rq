@@ -9,9 +9,11 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX QTL: <http://purl.obolibrary.org/obo/SO_0000771>
 PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX so: <http://purl.obolibrary.org/obo/so#>
 
 SELECT
   ?qtl_id
+  (CONCAT('NCBITaxon:', REPLACE(STR(?taxon_uri), '.+_', ''))  AS ?taxon_id)
 WHERE {
   GRAPH <http://europepmc.org> {
     SELECT
@@ -19,7 +21,8 @@ WHERE {
     WHERE {
       ?qtl a QTL: ;
         dcterms:identifier ?qtl_id ;
-        obo:RO_0003308 ?trait_id .
+        obo:RO_0003308 ?trait_id ;
+        ^dcterms:hasPart/so:genome_of ?taxon_uri .
       FILTER(?trait_id = URI(CONCAT(obo:, REPLACE(?_traitid, ':', '_'))))
     }
   }
